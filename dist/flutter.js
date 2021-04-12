@@ -1,95 +1,182 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Column = exports.Aligment = exports.Container = exports.Scaffold = exports.SeoTag = exports.BorderRadius = exports.TypeImg = exports.Language = void 0;
-var Language;
-(function (Language) {
-    Language["ES"] = "es";
-    Language["EN"] = "en";
-})(Language = exports.Language || (exports.Language = {}));
-var TypeImg;
-(function (TypeImg) {
-    TypeImg["ICO"] = "image/x-icon";
-    TypeImg["PNG"] = "image/png";
-})(TypeImg = exports.TypeImg || (exports.TypeImg = {}));
-var BorderRadius;
-(function (BorderRadius) {
-    BorderRadius["VW"] = "vw";
-    BorderRadius["Porcent"] = "%";
-})(BorderRadius = exports.BorderRadius || (exports.BorderRadius = {}));
-var SeoTag;
-(function (SeoTag) {
-    SeoTag["HEADER"] = "header";
-    SeoTag["FOOTER"] = "footer";
-    SeoTag["ASIDE"] = "aside";
-    SeoTag["MAIN"] = "main";
-    SeoTag["DIV"] = "div";
-})(SeoTag = exports.SeoTag || (exports.SeoTag = {}));
-const Scaffold = (options) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
-    return `<!DOCTYPE html>
-<html lang='${((_a = options === null || options === void 0 ? void 0 : options.header) === null || _a === void 0 ? void 0 : _a.lenguaje) || Language.ES}'>
+exports.Row = exports.Column = exports.CrossAxisAligmentE = exports.MainAxisAligmentE = exports.Container = exports.Scaffold = exports.SeoTagContainerE = exports.BorderRadiusE = exports.TypeImgE = exports.LanguageE = void 0;
+const fs_1 = __importDefault(require("fs"));
+const html_minifier_1 = require("html-minifier");
+const pretty_1 = __importDefault(require("pretty"));
+const uuid_1 = require("uuid");
+var LanguageE;
+(function (LanguageE) {
+    LanguageE["ES"] = "es";
+    LanguageE["EN"] = "en";
+})(LanguageE = exports.LanguageE || (exports.LanguageE = {}));
+var TypeImgE;
+(function (TypeImgE) {
+    TypeImgE["ICO"] = "image/x-icon";
+    TypeImgE["PNG"] = "image/png";
+})(TypeImgE = exports.TypeImgE || (exports.TypeImgE = {}));
+var BorderRadiusE;
+(function (BorderRadiusE) {
+    BorderRadiusE["VW"] = "vw";
+    BorderRadiusE["Porcent"] = "%";
+})(BorderRadiusE = exports.BorderRadiusE || (exports.BorderRadiusE = {}));
+var SeoTagContainerE;
+(function (SeoTagContainerE) {
+    SeoTagContainerE["HEADER"] = "header";
+    SeoTagContainerE["FOOTER"] = "footer";
+    SeoTagContainerE["ASIDE"] = "aside";
+    SeoTagContainerE["MAIN"] = "main";
+    SeoTagContainerE["DIV"] = "div";
+})(SeoTagContainerE = exports.SeoTagContainerE || (exports.SeoTagContainerE = {}));
+const Scaffold = ({ extension = 'html', filename = 'FirstApp', path = './views', productionMode = false, header = {
+    languaje: LanguageE.EN,
+    description: 'Demo',
+    keywords: 'Demo',
+    title: 'First App',
+    favicon: {
+        path: '',
+        type: TypeImgE.ICO
+    },
+    ogp: {
+        title: '',
+        image: '',
+        type: '',
+        url: ''
+    }
+}, body }) => {
+    var _a, _b, _c, _d, _e, _f;
+    let page = `<!DOCTYPE html> 
+<html lang='${header.languaje}'>
 <head>
-    <meta charset='UTF-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta charset='UTF-8'/>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
 
-    <meta name='description' content='${((_b = options === null || options === void 0 ? void 0 : options.header) === null || _b === void 0 ? void 0 : _b.description) || ""}'>
-    <meta name='keywords' content='${((_c = options === null || options === void 0 ? void 0 : options.header) === null || _c === void 0 ? void 0 : _c.keywords) || ""}' />
+    <meta name='description' content='${header.description}'/>
+    <meta name='keywords' content='${header.keywords}' />
 
-    <meta property='og:title' content='${((_e = (_d = options === null || options === void 0 ? void 0 : options.header) === null || _d === void 0 ? void 0 : _d.op) === null || _e === void 0 ? void 0 : _e.title) || ""}' />
-    <meta property='og:type'  content='${((_g = (_f = options === null || options === void 0 ? void 0 : options.header) === null || _f === void 0 ? void 0 : _f.op) === null || _g === void 0 ? void 0 : _g.type) || ""}' />
-    <meta property='og:url'   content='${((_j = (_h = options === null || options === void 0 ? void 0 : options.header) === null || _h === void 0 ? void 0 : _h.op) === null || _j === void 0 ? void 0 : _j.url) || ""}' />
-    <meta property='og:image' content='${((_l = (_k = options === null || options === void 0 ? void 0 : options.header) === null || _k === void 0 ? void 0 : _k.op) === null || _l === void 0 ? void 0 : _l.image) || ""}' />
+    <meta property='og:title' content='${(_a = header.ogp) === null || _a === void 0 ? void 0 : _a.title}' />
+    <meta property='og:type'  content='${(_b = header.ogp) === null || _b === void 0 ? void 0 : _b.type}' />
+    <meta property='og:url'   content='${(_c = header.ogp) === null || _c === void 0 ? void 0 : _c.url}' />
+    <meta property='og:image' content='${(_d = header.ogp) === null || _d === void 0 ? void 0 : _d.image}' />
 
-    <link rel='shortcut icon' href='${((_o = (_m = options === null || options === void 0 ? void 0 : options.header) === null || _m === void 0 ? void 0 : _m.favicon) === null || _o === void 0 ? void 0 : _o.path) || ""}' type='${((_q = (_p = options === null || options === void 0 ? void 0 : options.header) === null || _p === void 0 ? void 0 : _p.favicon) === null || _q === void 0 ? void 0 : _q.type) || TypeImg.ICO}'>
+    <link rel='shortcut icon' href='${(_e = header.favicon) === null || _e === void 0 ? void 0 : _e.path}' type='${(_f = header.favicon) === null || _f === void 0 ? void 0 : _f.type}'>
 
-    <title>${((_r = options === null || options === void 0 ? void 0 : options.header) === null || _r === void 0 ? void 0 : _r.title) || ""}</title>
+    <title>${header.title}</title>
 </head>
-
 <body>
-
-    <scaffold>
-    
-        ${options === null || options === void 0 ? void 0 : options.body}
-
+    <scaffold>${body}
     </scaffold>
-
 </body>
-</html>`;
+</html>
+`;
+    if (productionMode) {
+        page = html_minifier_1.minify(page, {
+            collapseInlineTagWhitespace: true,
+            html5: true,
+            collapseWhitespace: true,
+        });
+    }
+    else {
+        page = pretty_1.default(page, { ocd: true });
+    }
+    fs_1.default.writeFile(
+    /* Path de la vista */ `${path}/${filename}.${extension}`, 
+    /* Contenido html */ page, (error) => { });
 };
 exports.Scaffold = Scaffold;
-const Container = (options) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+const Container = ({ height, width, seoTag = SeoTagContainerE.DIV, stateClass = {
+    hover: {
+        background: undefined,
+        borderRadius: undefined
+    },
+    normal: {
+        background: undefined,
+        borderRadius: undefined
+    },
+}, child = '' }) => {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
+    let id = 'class-' + uuid_1.v4();
     return `
-    <${(options === null || options === void 0 ? void 0 : options.seoTag) || SeoTag.DIV} style='
-            display: inline-block;
-            ${(options === null || options === void 0 ? void 0 : options.height) === undefined ? `` : `height: ${options === null || options === void 0 ? void 0 : options.height}vw;`}
-            ${(options === null || options === void 0 ? void 0 : options.width) === undefined ? `` : `width: ${options === null || options === void 0 ? void 0 : options.width}%;`}
-            ${((_a = options === null || options === void 0 ? void 0 : options.style) === null || _a === void 0 ? void 0 : _a.background) === undefined ? `` : `
-                background: rgba(
-                  ${((_c = (_b = options === null || options === void 0 ? void 0 : options.style) === null || _b === void 0 ? void 0 : _b.background) === null || _c === void 0 ? void 0 : _c.r) || 0},
-                  ${((_e = (_d = options === null || options === void 0 ? void 0 : options.style) === null || _d === void 0 ? void 0 : _d.background) === null || _e === void 0 ? void 0 : _e.g) || 0},
-                  ${((_g = (_f = options === null || options === void 0 ? void 0 : options.style) === null || _f === void 0 ? void 0 : _f.background) === null || _g === void 0 ? void 0 : _g.b) || 0},
-                  ${((_j = (_h = options === null || options === void 0 ? void 0 : options.style) === null || _h === void 0 ? void 0 : _h.background) === null || _j === void 0 ? void 0 : _j.a) || 0});
-                  `}
-            ${((_k = options === null || options === void 0 ? void 0 : options.style) === null || _k === void 0 ? void 0 : _k.borderRadius) === undefined ? `` : `
-                border-radius: ${(_l = options === null || options === void 0 ? void 0 : options.style) === null || _l === void 0 ? void 0 : _l.borderRadius.value}${(_m = options === null || options === void 0 ? void 0 : options.style) === null || _m === void 0 ? void 0 : _m.borderRadius.type} 
-              `}
-            '
-    >
-      ${(options === null || options === void 0 ? void 0 : options.children) === undefined ? `` : `${options === null || options === void 0 ? void 0 : options.children}`}
-    </${(options === null || options === void 0 ? void 0 : options.seoTag) || SeoTag.DIV}>`;
+    <${seoTag} 
+      class='${id}'
+  >
+  <style>
+      .${id} {
+        display: inline-block;
+        ${height === undefined ? `` : `height: ${height}vw;`}
+        ${width === undefined ? `` : `width: ${width}%;`}
+        background: red;
+        ${((_a = stateClass.normal) === null || _a === void 0 ? void 0 : _a.borderRadius) === undefined ? `` : `
+          border-radius: ${(_b = stateClass.normal) === null || _b === void 0 ? void 0 : _b.borderRadius.value}${(_c = stateClass.normal) === null || _c === void 0 ? void 0 : _c.borderRadius.type} 
+          `}
+        ${((_d = stateClass.normal) === null || _d === void 0 ? void 0 : _d.background) === undefined ? `` : `
+          background: rgba(
+            ${(_e = stateClass.normal) === null || _e === void 0 ? void 0 : _e.background.r},  
+            ${(_f = stateClass.normal) === null || _f === void 0 ? void 0 : _f.background.g}, 
+            ${(_g = stateClass.normal) === null || _g === void 0 ? void 0 : _g.background.b},
+            ${(_h = stateClass.normal) === null || _h === void 0 ? void 0 : _h.background.a});  
+            `}
+
+      }
+      .${id}:hover{
+        display: inline-block;
+        ${((_j = stateClass.hover) === null || _j === void 0 ? void 0 : _j.background) === undefined ? `` : `
+          background: rgba(
+            ${(_k = stateClass.hover) === null || _k === void 0 ? void 0 : _k.background.r},  
+            ${(_l = stateClass.hover) === null || _l === void 0 ? void 0 : _l.background.g}, 
+            ${(_m = stateClass.hover) === null || _m === void 0 ? void 0 : _m.background.b},
+            ${(_o = stateClass.hover) === null || _o === void 0 ? void 0 : _o.background.a}); 
+            `}
+      }
+  </style>
+      ${child}
+    </${seoTag}>`;
 };
 exports.Container = Container;
-var Aligment;
-(function (Aligment) {
-    Aligment["End"] = "flex-end";
-    Aligment["Center"] = "center";
-    Aligment["Start"] = "flex-start";
-    Aligment["SpaceAround"] = "space-around";
-    Aligment["SpaceBetween"] = "space-between";
-    Aligment["SpaceEvenly"] = "space-evenly";
-})(Aligment = exports.Aligment || (exports.Aligment = {}));
-const Column = ({ MainAxisAligment = Aligment.Start }) => {
+var MainAxisAligmentE;
+(function (MainAxisAligmentE) {
+    MainAxisAligmentE["End"] = "flex-end";
+    MainAxisAligmentE["Center"] = "center";
+    MainAxisAligmentE["Start"] = "flex-start";
+    MainAxisAligmentE["SpaceAround"] = "space-around";
+    MainAxisAligmentE["SpaceBetween"] = "space-between";
+    MainAxisAligmentE["SpaceEvenly"] = "space-evenly";
+})(MainAxisAligmentE = exports.MainAxisAligmentE || (exports.MainAxisAligmentE = {}));
+var CrossAxisAligmentE;
+(function (CrossAxisAligmentE) {
+    CrossAxisAligmentE["End"] = "end";
+    CrossAxisAligmentE["Start"] = "Start";
+    CrossAxisAligmentE["Center"] = "center";
+})(CrossAxisAligmentE = exports.CrossAxisAligmentE || (exports.CrossAxisAligmentE = {}));
+const Column = ({ mainAxisAligment = MainAxisAligmentE.Start, crossAxisAligment = CrossAxisAligmentE.Start, children }) => {
+    return `
+    <div style="
+        display: flex;
+        flex-direction: column;
+        justify-content: ${mainAxisAligment};
+        align-items: ${crossAxisAligment};
+      ">
+      ${children.toString().replace(/,/g, '')}
+    </div>
+  
+  `;
 };
 exports.Column = Column;
+const Row = ({ mainAxisAligment = MainAxisAligmentE.Start, crossAxisAligment = CrossAxisAligmentE.Start, children }) => {
+    return `
+    <div style="
+        display: flex;
+        flex-direction: row;
+        justify-content: ${mainAxisAligment};
+        align-items: ${crossAxisAligment};
+      ">
+      ${children.toString().replace(/,/g, '')}
+    </div>
+  
+  `;
+};
+exports.Row = Row;

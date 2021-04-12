@@ -18,21 +18,25 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = __importDefault(require("fs"));
 const App = __importStar(require("./flutter"));
-var htmlContent = App.Scaffold({
-    header: {
-        description: 'Este es un Framework de prueba',
-        title: 'Mi primer proyecto',
-    },
-    body: App.Container({
-        children: 'Hola como estas?'
+App.Scaffold({
+    productionMode: false,
+    body: App.Column({
+        mainAxisAligment: App.MainAxisAligmentE.SpaceAround,
+        children: [
+            App.Container({
+                child: 'Hola'
+            }),
+            App.Container({
+                child: 'Como'
+            }),
+            App.Container({
+                child: 'Te'
+            }),
+            App.Container({
+                child: 'LLamas?'
+            }),
+        ]
     })
 });
-fs_1.default.writeFile(
-/* Path de la vista */ './views/my-page.html', 
-/* Contenido html */ htmlContent, (error) => { });
