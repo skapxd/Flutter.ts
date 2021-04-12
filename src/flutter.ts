@@ -3,6 +3,10 @@ import { minify } from "html-minifier";
 import pretty from "pretty";
 import { v4 as uid } from "uuid";
 
+export enum AppModeE {
+  Prod = 'production',
+  Dev = 'development',
+}
 
 export enum LanguageE {
   ES = "es",
@@ -52,7 +56,7 @@ interface HeaderI {
 interface ScaffoldI {
   extension?: string;
   filename?: string;
-  productionMode?: boolean;
+  appMode?: AppModeE;
   path?: string;
   header?: HeaderI;
   body: string;
@@ -62,7 +66,7 @@ export const Scaffold = ({
   extension = 'html',
   filename = 'FirstApp',
   path = './views',
-  productionMode = false,
+  appMode: mode = AppModeE.Dev,
   header = {
     languaje: LanguageE.EN,
     description: 'Demo',
@@ -110,11 +114,12 @@ export const Scaffold = ({
 </html>
 `;
 
-  if (productionMode) {
+  if (mode === 'production') {
     page = minify(page, {
       collapseInlineTagWhitespace: true,
-      html5: true,
       collapseWhitespace: true,
+      minifyCSS: true,
+      minifyJS: true
 
     })
   } else {
@@ -163,7 +168,7 @@ export const Container = ({
   height,
   width,
   seoTag = SeoTagContainerE.DIV,
-  stateClass = {  
+  stateClass = {
     hover: {
       background: undefined,
       borderRadius: undefined
@@ -171,15 +176,16 @@ export const Container = ({
     normal: {
       background: undefined,
       borderRadius: undefined
-    },  
+    },
   },
   child = ''
 }: ContainerI): string => {
   let id: string = 'class-' + uid()
   return `
-    <${seoTag} 
-      class='${id}'
-  >
+  
+  <${seoTag} 
+  class='${id}'
+>
   <style>
       .${id} {
         display: inline-block;
@@ -189,7 +195,7 @@ export const Container = ({
         ${stateClass.normal?.borderRadius === undefined ? `` : `
           border-radius: ${stateClass.normal?.borderRadius.value}${stateClass.normal?.borderRadius.type} 
           `
-        }
+    }
         ${stateClass.normal?.background === undefined ? `` : `
           background: rgba(
             ${stateClass.normal?.background.r},  
@@ -197,7 +203,7 @@ export const Container = ({
             ${stateClass.normal?.background.b},
             ${stateClass.normal?.background.a});  
             `
-        }
+    }
 
       }
       .${id}:hover{
@@ -209,9 +215,10 @@ export const Container = ({
             ${stateClass.hover?.background.b},
             ${stateClass.hover?.background.a}); 
             `
-        }
+    }
       }
   </style>
+  
       ${child}
     </${seoTag}>`;
 
@@ -283,4 +290,39 @@ export const Row = ({
   
   `;
 
+}
+
+interface TextFieldI {
+  onChange: (value: string) => void;
+}
+
+export const TextField = ({
+  onChange,
+
+}: TextFieldI) => {
+
+  let input: string = 'id-' + uid()
+  let output: string = 'id-' + uid()
+
+  console.log(onChange)
+
+  return `
+  <input type="text" id="${ input }">
+  <div id="${ output }"></div>
+  
+  <script>
+  
+    const input = document.querySelector('#${ input }');
+    const output = document.querySelector('#${ output }');
+  
+    input.addEventListener('input', () => {
+      output.innerHTML = input.value;
+      let value = ${ onChange } 
+      value(input.value)
+      
+    })
+  
+  </script>
+    
+  `
 }

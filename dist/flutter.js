@@ -3,11 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Row = exports.Column = exports.CrossAxisAligmentE = exports.MainAxisAligmentE = exports.Container = exports.Scaffold = exports.SeoTagContainerE = exports.BorderRadiusE = exports.TypeImgE = exports.LanguageE = void 0;
+exports.TextField = exports.Row = exports.Column = exports.CrossAxisAligmentE = exports.MainAxisAligmentE = exports.Container = exports.Scaffold = exports.SeoTagContainerE = exports.BorderRadiusE = exports.TypeImgE = exports.LanguageE = exports.AppModeE = void 0;
 const fs_1 = __importDefault(require("fs"));
 const html_minifier_1 = require("html-minifier");
 const pretty_1 = __importDefault(require("pretty"));
 const uuid_1 = require("uuid");
+var AppModeE;
+(function (AppModeE) {
+    AppModeE["Prod"] = "production";
+    AppModeE["Dev"] = "development";
+})(AppModeE = exports.AppModeE || (exports.AppModeE = {}));
 var LanguageE;
 (function (LanguageE) {
     LanguageE["ES"] = "es";
@@ -31,7 +36,7 @@ var SeoTagContainerE;
     SeoTagContainerE["MAIN"] = "main";
     SeoTagContainerE["DIV"] = "div";
 })(SeoTagContainerE = exports.SeoTagContainerE || (exports.SeoTagContainerE = {}));
-const Scaffold = ({ extension = 'html', filename = 'FirstApp', path = './views', productionMode = false, header = {
+const Scaffold = ({ extension = 'html', filename = 'FirstApp', path = './views', appMode: mode = AppModeE.Dev, header = {
     languaje: LanguageE.EN,
     description: 'Demo',
     keywords: 'Demo',
@@ -73,11 +78,12 @@ const Scaffold = ({ extension = 'html', filename = 'FirstApp', path = './views',
 </body>
 </html>
 `;
-    if (productionMode) {
+    if (mode === 'production') {
         page = html_minifier_1.minify(page, {
             collapseInlineTagWhitespace: true,
-            html5: true,
             collapseWhitespace: true,
+            minifyCSS: true,
+            minifyJS: true
         });
     }
     else {
@@ -101,9 +107,10 @@ const Container = ({ height, width, seoTag = SeoTagContainerE.DIV, stateClass = 
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     let id = 'class-' + uuid_1.v4();
     return `
-    <${seoTag} 
-      class='${id}'
-  >
+  
+  <${seoTag} 
+  class='${id}'
+>
   <style>
       .${id} {
         display: inline-block;
@@ -133,6 +140,7 @@ const Container = ({ height, width, seoTag = SeoTagContainerE.DIV, stateClass = 
             `}
       }
   </style>
+  
       ${child}
     </${seoTag}>`;
 };
@@ -180,3 +188,28 @@ const Row = ({ mainAxisAligment = MainAxisAligmentE.Start, crossAxisAligment = C
   `;
 };
 exports.Row = Row;
+const TextField = ({ onChange, }) => {
+    let input = 'id-' + uuid_1.v4();
+    let output = 'id-' + uuid_1.v4();
+    console.log(onChange);
+    return `
+  <input type="text" id="${input}">
+  <div id="${output}"></div>
+  
+  <script>
+  
+    const input = document.querySelector('#${input}');
+    const output = document.querySelector('#${output}');
+  
+    input.addEventListener('input', () => {
+      output.innerHTML = input.value;
+      let value = ${onChange} 
+      value(input.value)
+      
+    })
+  
+  </script>
+    
+  `;
+};
+exports.TextField = TextField;

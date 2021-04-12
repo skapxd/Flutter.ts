@@ -15,61 +15,17 @@
   </head>
   <body>
     <scaffold>
-      <div style="
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: Start;
-      ">
-        <div class='class-6e19f1c4-5749-4564-93fd-73b8f271caf9'>
-          <style>
-            .class-6e19f1c4-5749-4564-93fd-73b8f271caf9 {
-              display: inline-block;
-              background: red;
-            }
-            .class-6e19f1c4-5749-4564-93fd-73b8f271caf9:hover {
-              display: inline-block;
-            }
-          </style>
-          Hola
-        </div>
-        <div class='class-2af50865-6a2a-443e-9321-33757a2b3111'>
-          <style>
-            .class-2af50865-6a2a-443e-9321-33757a2b3111 {
-              display: inline-block;
-              background: red;
-            }
-            .class-2af50865-6a2a-443e-9321-33757a2b3111:hover {
-              display: inline-block;
-            }
-          </style>
-          Como
-        </div>
-        <div class='class-6361cf5f-108f-4d08-81e4-73c909c9620d'>
-          <style>
-            .class-6361cf5f-108f-4d08-81e4-73c909c9620d {
-              display: inline-block;
-              background: red;
-            }
-            .class-6361cf5f-108f-4d08-81e4-73c909c9620d:hover {
-              display: inline-block;
-            }
-          </style>
-          Te
-        </div>
-        <div class='class-1d6bbaa6-1066-48bc-8b1a-fb2b1655c5f9'>
-          <style>
-            .class-1d6bbaa6-1066-48bc-8b1a-fb2b1655c5f9 {
-              display: inline-block;
-              background: red;
-            }
-            .class-1d6bbaa6-1066-48bc-8b1a-fb2b1655c5f9:hover {
-              display: inline-block;
-            }
-          </style>
-          LLamas?
-        </div>
-      </div>
+      <input type="text" id="id-a6b566fd-5409-443f-b996-e6b12cb16261">
+      <div id="id-8f64e740-bdfb-439a-8427-1503499e1a26"></div>
+      <script>
+        const input = document.querySelector('#id-a6b566fd-5409-443f-b996-e6b12cb16261');
+        const output = document.querySelector('#id-8f64e740-bdfb-439a-8427-1503499e1a26');
+        input.addEventListener('input', () => {
+          output.innerHTML = input.value;
+          let value = (e) => {}
+          value(input.value)
+        })
+      </script>
     </scaffold>
   </body>
 </html>
